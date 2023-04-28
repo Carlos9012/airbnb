@@ -30,9 +30,9 @@ mongoose.connect(process.env.MONGO_URL);
 
 function getUserDataFromReq(req) {
   return new Promise((resolve, reject) => {
-    jwt.verify(req.cookies.token, jwtSecret, {}, async (err, userData) => {
+    jwt.verify(req.cookies.token, jwtSecret, {}, async (err,userData) => {
       if (err) throw err;
-      resolve(userData);
+        resolve(userData);
     });
   });
 }
@@ -196,7 +196,7 @@ app.post('/bookings', async (req, res) => {
 
 app.get('/bookings', async (req, res) => {
   const userData = await getUserDataFromReq(req);
-  res.json( Booking.find({user:userData.id}) );
+  res.json( await Booking.find({user:userData.id}).populate('place'));
 });
 
 app.listen(4000);
